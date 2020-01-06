@@ -82,6 +82,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 //***************************************************************************
 
+#ifdef __ANDROID__
+#ifndef LOGI
+#include <android/log.h>
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNI", __VA_ARGS__))
+#endif
+
+#endif
+
 #ifndef DATADIR
 #define DATADIR	""
 #endif
