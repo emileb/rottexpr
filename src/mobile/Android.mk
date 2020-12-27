@@ -15,7 +15,7 @@ LOCAL_C_INCLUDES += $(SDL_INCLUDE_PATHS) \
                     $(TOP_DIR)/MobileTouchControls \
                     $(TOP_DIR)/Clibs_OpenTouch
 
-LOCAL_SRC_FILES += mobile/game_interface.cpp
+LOCAL_SRC_FILES += mobile/game_interface.c
 
 LOCAL_SRC_FILES += ../../../Clibs_OpenTouch/alpha/android_jni.cpp
 LOCAL_SRC_FILES += ../../../Clibs_OpenTouch/alpha/touch_interface.cpp

@@ -1,7 +1,5 @@
 
-
-extern "C"
-{
+#include "rt_def.h"
 
 #include <stdbool.h>
 
@@ -24,7 +22,7 @@ extern "C"
 #endif
 
 
-extern "C" int printf (__const char * format, ...)
+int printf (__const char * format, ...)
 {
    char buffer[256];
    va_list args;
@@ -52,10 +50,12 @@ int PortableKeyEvent(int state, int code, int unicode){
 
 static bool checkAck = false;
 
+static boolean android_buttonpoll[NUMBUTTONS] = {0};
+extern boolean buttonpoll[NUMBUTTONS];
+
 void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d   %d",state,action);
-
 
 	if (((action >= PORT_ACT_MENU_UP) && (action <= PORT_ACT_MENU_ABORT)) &&
 	    (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_Y_N )))
@@ -95,12 +95,80 @@ void PortableAction(int state, int action)
 	}
 	else
 	{
-        switch (action)
-        {
+		int key = bt_nobutton;
+		switch (action)
+		{
+			case PORT_ACT_LEFT:
+			    key = bt_strafeleft;
+			    break;
+			case PORT_ACT_RIGHT:
+			    key = bt_straferight;
+			    break;
+			case PORT_ACT_FWD:
+			    key = di_north;
+			    break;
+			case PORT_ACT_BACK:
+			    key = di_south;
+			    break;
+
+			case PORT_ACT_MOVE_LEFT:
+			    key = di_east;
+			    break;
+			case PORT_ACT_MOVE_RIGHT:
+			    key = di_west;
+			    break;
+
+			case PORT_ACT_USE:
+			    key = bt_use;
+			    break;
+			case PORT_ACT_ATTACK:
+			    key = bt_attack;
+			    break;
+
+			case PORT_ACT_MAP:
+			    key = bt_map;
+			    break;
+			case PORT_ACT_MAP_ZOOM_IN:
+			    PortableKeyEvent(state,SDL_SCANCODE_EQUALS,0);
+			    break;
+			case PORT_ACT_MAP_ZOOM_OUT:
+			    PortableKeyEvent(state,SDL_SCANCODE_MINUS,0);
+			    break;
+			case PORT_ACT_NEXT_WEP:
+			    //key = e_bi_next_weapon;
+			    break;
+			case PORT_ACT_PREV_WEP:
+			    //key = e_bi_prev_weapon;
+			    break;
+
+			case PORT_ACT_QUICKSAVE:
+			    //key = e_bi_quick_save;
+			    break;
+			case PORT_ACT_QUICKLOAD:
+			    //key = e_bi_quick_load;
+			    break;
+
+			case PORT_ACT_WEAP1:
+			    key = bt_pistol;
+			    break;
+			case PORT_ACT_WEAP2:
+			    key = bt_dualpistol;
+			    break;
+			case PORT_ACT_WEAP3:
+			    key = bt_mp40;
+			    break;
+			case PORT_ACT_WEAP4:
+			    key = bt_missileweapon;
+			    break;
+		}
+
+		if(key != bt_nobutton)
+		{
+			android_buttonpoll[key] = state;
 		}
 	}
-
 }
+
 
 // =================== FORWARD and SIDE MOVMENT ==============
 
@@ -195,7 +263,7 @@ void PortableBackButton()
 {
     PortableKeyEvent(1, SDL_SCANCODE_ESCAPE,0 );
     // Horrible and risky, wait for 200ms, in this time the game must have run a frame or 2 to pickup the key press
-    int usleep(int);
+    //int usleep(int);
     usleep( 1000 * 200 );
     PortableKeyEvent(0, SDL_SCANCODE_ESCAPE, 0);
 }
@@ -205,43 +273,21 @@ void PortableAutomapControl(float zoom, float x, float y)
 
 }
 
-}
 
-#define BASEMOVE                35
-#define RUNMOVE                 70
-#define BASETURN                35
-#define RUNTURN                 70
-
-void mobile_StartAck()
+void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 {
-	checkAck = false;
+
+	*side = sidemove       * -600000;
+	*forward = -forwardmove   * 1000;
+	*yaw = look_yaw_mouse * 150000000;
+	*pitch = look_pitch_mouse * -600;
+
+	look_yaw_mouse = 0;
+	look_pitch_mouse = 0;
+
+	memcpy( buttonpoll, android_buttonpoll, sizeof(android_buttonpoll));
 }
 
-bool mobile_CheckAck()
-{
-	bool ret = checkAck;
-	checkAck = false;
-	return ret;
-}
 
-//NOTE this is cpp
-void pollAndroidControls(int tics,int *controlx, int *controly,int *controlstrafe, bool *  buttons)
-{
-	*controly  -= forwardmove     * tics * BASEMOVE;
-	*controlstrafe  += sidemove   * tics * BASEMOVE;
-
-
-	switch(look_yaw_mode)
-	{
-	case LOOK_MODE_MOUSE:
-		*controlx += -look_yaw_mouse * 8000;
-		look_yaw_mouse = 0;
-		break;
-	case LOOK_MODE_JOYSTICK:
-		*controlx += -look_yaw_joy * 80;
-		break;
-	}
-
-}
 
 
