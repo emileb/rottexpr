@@ -31,7 +31,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 #define YZTILTSPEED   20*4//*2 = bna added
-#define SNAPBACKSPEED 10*15//*2 = bna added
+#define SNAPBACKSPEED 2*10//*2 = bna added
 #define YZHORIZONSPEED 4*5//*2 = bna added
 #define HORIZONYZOFFSET (FINEANGLES/4)
 #define SetPlayerHorizon(ps,hlevel)    \
