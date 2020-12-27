@@ -7,7 +7,7 @@
 //typedef unsigned char byte;
 
 int iGLOBAL_SCREENWIDTH  = 640;//bna val 800
-int iGLOBAL_SCREENHEIGHT = 480;//bna val 600
+int iGLOBAL_SCREENHEIGHT = 400;//bna val 600
 int iGLOBAL_SCREENBWIDE ;
 int iG_SCREENWIDTH;// default screen width in bytes
 
