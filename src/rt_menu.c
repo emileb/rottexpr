@@ -769,6 +769,7 @@ CP_MenuNames ScreenResolutions[] =
     "1152x864",
     "1280x720",
     "1280x768",
+#ifndef __ANDROID__
     "1280x800",
     "1280x960",
     "1280x1024",
@@ -781,6 +782,7 @@ CP_MenuNames ScreenResolutions[] =
     "2560x1080",
     "2560x1440",
     "3840x2160"
+#endif
 };
 CP_itemtype ScreenResolutionMenu[] = {
     {1, "", ' ',NULL},
@@ -791,6 +793,7 @@ CP_itemtype ScreenResolutionMenu[] = {
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
+#ifndef __ANDROID__
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
@@ -803,6 +806,7 @@ CP_itemtype ScreenResolutionMenu[] = {
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
     {1, "", ' ',NULL},
+#endif
 };
 
 CP_MenuNames DisplayOptionsNames[] = {
@@ -819,7 +823,7 @@ CP_itemtype DisplayOptionsItems[] = {
 
 CP_iteminfo VisualOptionsItems = { 20, MENU_Y, 4, 0, 43, VisualOptionsNames, mn_largefont };
 
-CP_iteminfo ScreenResolutionItems = {NORMALKEY_X, 17, 19, 0, 16, ScreenResolutions, mn_tinyfont};
+CP_iteminfo ScreenResolutionItems = {NORMALKEY_X, 17, 8, 0, 16, ScreenResolutions, mn_smallfont};
 
 CP_iteminfo ExtOptionsItems = { 20, MENU_Y, 7, 0, 43, ExtOptionsNames, mn_largefont };
 
@@ -5293,7 +5297,7 @@ void DoAdjustFocalWidth (void)
 extern int hudRescaleFactor;
 void DoAdjustHudScale (void)
 {   
-    SliderMenu (&hudRescaleFactor, 10, 0, 44, 81, 194, 1, "block2", NULL,
+    SliderMenu (&hudRescaleFactor, 5, 0, 44, 81, 194, 1, "block2", NULL,
                 "Adjust Hud Scaling", "Small", "Large" );
     DrawVisualsMenu ();
 }
