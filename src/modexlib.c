@@ -282,7 +282,7 @@ void RescaleAreaOfTexture(SDL_Renderer* renderer, SDL_Texture * source, SDL_Rect
     SDL_DestroyTexture(sourceToResize);
 }
 
-int hudRescaleFactor = 1;
+int hudRescaleFactor = 2;
 
 void RenderSurface(void)
 {
@@ -296,19 +296,21 @@ void RenderSurface(void)
    
     SDL_RenderClear(renderer);
     
-    SDL_RenderCopy(renderer, newTex, NULL, NULL);
-    
+ 	SDL_RenderCopy(renderer, newTex, NULL, NULL);
+
     if (!StretchScreen && hudRescaleFactor > 1 && doRescaling)
     {
         if(SHOW_TOP_STATUS_BAR())
             RescaleAreaOfTexture(renderer, newTex, (SDL_Rect) {(iGLOBAL_SCREENWIDTH - 320) >> 1, 0, 320, 16}, 
-                   (SDL_Rect) {(iGLOBAL_SCREENWIDTH - (320 * hudRescaleFactor)) >> 1, 0, 320*hudRescaleFactor, 16*hudRescaleFactor}); //Status Bar
+                   //(SDL_Rect) {(iGLOBAL_SCREENWIDTH - (320 * hudRescaleFactor)) >> 1, 0, 320*hudRescaleFactor, 16*hudRescaleFactor}); //Status Bar
+                   (SDL_Rect) {0, 0, iGLOBAL_SCREENWIDTH,  16*hudRescaleFactor}); //Status Bar
+
         if(SHOW_BOTTOM_STATUS_BAR())
             RescaleAreaOfTexture(renderer, newTex,(SDL_Rect) {(iGLOBAL_SCREENWIDTH - 320) >> 1, iGLOBAL_SCREENHEIGHT - 16, 320, 16},
-               (SDL_Rect) {(iGLOBAL_SCREENWIDTH - (320* hudRescaleFactor)) >> 1, iGLOBAL_SCREENHEIGHT - 16*hudRescaleFactor, 320*hudRescaleFactor, 16*hudRescaleFactor}); //Bottom Bar
-                   
+               //(SDL_Rect) {(iGLOBAL_SCREENWIDTH - (320* hudRescaleFactor)) >> 1, iGLOBAL_SCREENHEIGHT - 16*hudRescaleFactor, 320*hudRescaleFactor, 16*hudRescaleFactor}); //Bottom Bar
+               (SDL_Rect) {0, iGLOBAL_SCREENHEIGHT - 16*hudRescaleFactor, iGLOBAL_SCREENWIDTH, 16*hudRescaleFactor}); //Bottom Bar
     }
-    
+
     SDL_RenderPresent(renderer);
     
     SDL_DestroyTexture(newTex);
@@ -526,7 +528,7 @@ void DoScreenRotateScale(int w, int h, SDL_Texture * tex, float angle, float sca
     output.y = (iGLOBAL_SCREENHEIGHT - output.h)>>1;
     
     SDL_RenderCopyEx(renderer, tex, NULL, &output, angle, NULL, SDL_FLIP_NONE);
-        
+
     SDL_RenderPresent(renderer);
 
 
