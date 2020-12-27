@@ -2471,6 +2471,54 @@ void PollMove (void)
             controlbuf[2] = x;
     }
 
+#ifdef __ANDROID__
+	int ax = 0;
+	int ay = 0;
+    int az = 0;
+    int pitch = 0;
+
+    void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch);
+    INL_ANDROID_GetMovement(&ax, &ay, &az, &pitch);
+
+	// Strafing
+	if (ax < 0)
+	{
+	    angle = (player->angle - FINEANGLES/4)&(FINEANGLES-1);
+
+	    ax = (ax>>10) + (ax >> 11);
+
+	    controlbuf[0] = -(FixedMul (ax, costable[angle]));
+	    controlbuf[1] = FixedMul (ax, sintable[angle]);
+	}
+	else if (ax > 0)
+	{
+	    angle = (player->angle + FINEANGLES/4)&(FINEANGLES-1);
+
+	    ax = (ax>>10) + (ax >> 11);
+
+	    controlbuf[0] = FixedMul (ax, costable[angle]);
+	    controlbuf[1] = -(FixedMul (ax, sintable[angle]));
+	}
+
+	// Forward / backwards
+	if (ay != 0)
+	{
+	    controlbuf[0] += -(FixedMul (ay, viewcos));
+	    controlbuf[1] += (FixedMul (ay, viewsin));
+	}
+
+	// Turning
+    controlbuf[2] += az;
+
+    // Pitch
+    if (usemouselook == true)
+    {
+		playertype * pstate;
+		pstate=&PLAYERSTATE[consoleplayer];
+		pstate->horizon -= pitch * inverse_mouse;
+	}
+#endif
+
     if (buttonpoll[bt_strafeleft])
     {
         angle = (player->angle - FINEANGLES/4)&(FINEANGLES-1);
