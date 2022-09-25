@@ -360,7 +360,7 @@ void EnableScreenStretch(void)
     {
         /* should really be just 320x200, but there is code all over the
            places which crashes then */
-        unstretch_sdl_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+        unstretch_sdl_surface = SDL_CreateRGBSurface(0,
                                 iGLOBAL_SCREENWIDTH, iGLOBAL_SCREENHEIGHT, 8, 0, 0, 0, 0);
     }
 
@@ -414,9 +414,9 @@ static void StretchMemPicture ()
     dest.y = 0;
     dest.w = iGLOBAL_SCREENWIDTH;
     dest.h = iGLOBAL_SCREENHEIGHT;
+
     SDL_SoftStretch(unstretch_sdl_surface, &src, sdl_surface, &dest);
     SDL_RenderSetLogicalSize(renderer, 320, 200); //help keep aspect ratio of menus so that the game doesn't look stretched
-    
 }
 
 // bna function added start

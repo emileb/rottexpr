@@ -110,7 +110,6 @@ void PortableAction(int state, int action)
 			case PORT_ACT_BACK:
 			    key = di_south;
 			    break;
-
 			case PORT_ACT_MOVE_LEFT:
 			    key = di_east;
 			    break;
@@ -169,6 +168,15 @@ void PortableAction(int state, int action)
 	}
 }
 
+void PortableMouseButton(int state, int button, float dx, float dy)
+{
+
+}
+
+void PortableCommand(const char * cmd)
+{
+
+}
 
 // =================== FORWARD and SIDE MOVMENT ==============
 
@@ -278,7 +286,7 @@ void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 {
 
 	*side = sidemove       * -600000;
-	*forward = -forwardmove   * 1000;
+	*forward = -forwardmove   * 2000;
 	*yaw = look_yaw_mouse * 150000000;
 	*pitch = look_pitch_mouse * -600;
 

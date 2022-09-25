@@ -8,17 +8,19 @@ LOCAL_CFLAGS = -DSHAREWARE=0  -DSUPERROTT=0 -DSITELICENSE=0 -DUSE_SDL=1 -DPLATFO
 
 
 LOCAL_C_INCLUDES = $(TOP_DIR)/ \
-	               $(LOCAL_PATH)/../../../Clibs_OpenTouch/idtech1
+	               $(LOCAL_PATH)/../../../Clibs_OpenTouch/alpha
 
 #also include my SDL for SDL_android_extra.h 
 LOCAL_C_INCLUDES += $(SDL_INCLUDE_PATHS) \
                     $(TOP_DIR)/MobileTouchControls \
-                    $(TOP_DIR)/Clibs_OpenTouch
+                    $(TOP_DIR)/Clibs_OpenTouch \
+	                $(TOP_DIR)/Clibs_OpenTouch/alpha
 
 LOCAL_SRC_FILES += mobile/game_interface.c
 
 LOCAL_SRC_FILES += ../../../Clibs_OpenTouch/alpha/android_jni.cpp
 LOCAL_SRC_FILES += ../../../Clibs_OpenTouch/alpha/touch_interface.cpp
+LOCAL_SRC_FILES += ../../../Clibs_OpenTouch/touch_interface_base.cpp
 
 
 LOCAL_SRC_FILES += cin_actr.c
@@ -83,7 +85,6 @@ LOCAL_SRC_FILES += audiolib/nodpmi.c
 LOCAL_SRC_FILES += audiolib/pitch.c
 LOCAL_SRC_FILES += audiolib/user.c
 LOCAL_SRC_FILES += audiolib/usrhooks.c
-
 
 
 LOCAL_LDLIBS := -lEGL -ldl -llog -lz -lm -lc -lGLESv1_CM

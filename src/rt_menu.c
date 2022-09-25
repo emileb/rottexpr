@@ -767,6 +767,20 @@ typedef struct
     int hudScale;
 } ValidResolution;
 
+#ifdef __ANDROID__
+ValidResolution AvailableResolutions[] =
+{
+    {320, 200, NULL, 1},
+    {400, 200, "2:1", 1},
+    {640, 400, NULL, 2},
+    {640, 480, "4:3", 2},
+    {800, 400, "2:1", 2},
+    {800, 600, NULL, 2},
+    {1280, 720, "16:9", 3},
+    {1280, 800, "16:10", 3},
+    {1440, 900, "16:10", 3},
+};
+#else
 ValidResolution AvailableResolutions[] =
 {
     {320, 200, NULL, 1},
@@ -789,6 +803,7 @@ ValidResolution AvailableResolutions[] =
     {2560, 1440, NULL, 2},
     {3840, 2160, NULL, 2},
 };
+#endif
 
 CP_MenuNames *ScreenResolutions = NULL;
 
@@ -5319,7 +5334,11 @@ void DrawScreenResolutionMenu(void)
         }
 
         // Set item info
+#ifdef __ANDROID__
+        ScreenResolutionItems =  (CP_iteminfo){NORMALKEY_X, 17, nbrResolutions, 0, 16, ScreenResolutions, mn_smallfont};
+#else
         ScreenResolutionItems =  (CP_iteminfo){NORMALKEY_X, 17, nbrResolutions, 0, 16, ScreenResolutions, mn_tinyfont};
+#endif
     }
 
 	// Find the current resolution and select the resolution
