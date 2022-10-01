@@ -284,11 +284,16 @@ void PortableAutomapControl(float zoom, float x, float y)
 
 void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 {
+	*side += sidemove       * -600000;
+	*forward += -forwardmove   * 2000;
 
-	*side = sidemove       * -600000;
-	*forward = -forwardmove   * 2000;
-	*yaw = look_yaw_mouse * 150000000;
-	*pitch = look_pitch_mouse * -600;
+    // Mouse movement
+	*yaw += look_yaw_mouse * 150000000;
+	*pitch += look_pitch_mouse * -600;
+
+    // Joystick movement
+    *pitch +=  look_pitch_joy * 80;
+    *yaw += look_yaw_joy * 2000000;
 
 	look_yaw_mouse = 0;
 	look_pitch_mouse = 0;
