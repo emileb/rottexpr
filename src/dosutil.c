@@ -67,7 +67,21 @@ extern char ApogeePath[256];
 
 int setup_homedir (void)
 {
-#if PLATFORM_UNIX && !defined(__MINGW32__)
+#ifdef __ANDROID__
+
+    // Create  base rott path
+    snprintf (ApogeePath, sizeof (ApogeePath), "%s/rott/", getenv ("USER_FILES"));
+    mkdir (ApogeePath, S_IRWXU);
+
+#if (SHAREWARE == 1)
+    snprintf (ApogeePath, sizeof (ApogeePath), "%s/rott/hunt/", getenv ("USER_FILES"));
+    mkdir (ApogeePath, S_IRWXU);
+#else
+    snprintf (ApogeePath, sizeof (ApogeePath), "%s/rott/darkwar/", getenv ("USER_FILES"));
+    mkdir (ApogeePath, S_IRWXU);
+#endif
+
+#elif PLATFORM_UNIX && !defined(__MINGW32__)
     int err;
 
     /* try to create the root directory */
