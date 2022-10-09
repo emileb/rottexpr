@@ -2861,10 +2861,10 @@ void SetupGameMaster ( void )
 
 void GetDemoFilename (int demonumber, char * filename)
 {
-    strcpy(filename,DATADIR "DEMO0_0.DMO\0");
+    strcpy(filename,CreateDataDirPath("DEMO0_0.DMO\0", false));
 
-    filename[4 + strlen(DATADIR)] = (char)('0' + (byte)demonumber);
-    filename[6 + strlen(DATADIR)] = (char)('0' + (byte)gamestate.violence);
+    filename[4 + strlen(GetDataDirPath())] = (char)('0' + (byte)demonumber);
+    filename[6 + strlen(GetDataDirPath())] = (char)('0' + (byte)gamestate.violence);
     FixFilePath(filename);
 }
 //****************************************************************************
@@ -2875,7 +2875,7 @@ void GetDemoFilename (int demonumber, char * filename)
 
 boolean DemoExists (int demonumber)
 {
-    char demo[20 + sizeof(DATADIR)];
+    char demo[MAX_PATH];
 
     GetDemoFilename (demonumber, &demo[0]);
     if (access (demo, F_OK) == 0)
@@ -2904,7 +2904,7 @@ boolean DemoExists (int demonumber)
 
 void SaveDemo (int demonumber)
 {
-    char demo[20 + sizeof(DATADIR)];
+    char demo[MAX_PATH];
 
     RecordDemoCmd ();
     GetDemoFilename (demonumber, &demo[0]);
@@ -2920,7 +2920,7 @@ void SaveDemo (int demonumber)
 
 void LoadDemo (int demonumber)
 {
-    char demo[20 + sizeof(DATADIR)];
+    char demo[MAX_PATH];
     int size;
 
     GetDemoFilename (demonumber, demo);

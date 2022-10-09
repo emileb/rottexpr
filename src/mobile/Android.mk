@@ -10,7 +10,7 @@ LOCAL_CFLAGS = -DROTTEXPR -DSHAREWARE=0 -DSUPERROTT=0 -DSITELICENSE=0 -DUSE_SDL=
 LOCAL_C_INCLUDES = $(TOP_DIR)/ \
 	               $(LOCAL_PATH)/../../../Clibs_OpenTouch/alpha
 
-#also include my SDL for SDL_android_extra.h 
+
 LOCAL_C_INCLUDES += $(SDL_INCLUDE_PATHS) \
                     $(TOP_DIR)/MobileTouchControls \
                     $(TOP_DIR)/Clibs_OpenTouch \
@@ -89,7 +89,7 @@ LOCAL_SRC_FILES += audiolib/usrhooks.c
 
 LOCAL_LDLIBS := -lEGL -ldl -llog -lz -lm -lc -lGLESv1_CM
 LOCAL_STATIC_LIBRARIES := logwritter
-LOCAL_SHARED_LIBRARIES := touchcontrols  SDL2 SDL2_mixer core_shared
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer core_shared saffal
 
 LOCAL_STATIC_LIBRARIES +=
 

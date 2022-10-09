@@ -30,13 +30,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "rt_battl.h"
 
 #if (SHAREWARE==0)
-#define  STANDARDGAMELEVELS   (DATADIR "DARKWAR.RTL")
-#define  STANDARDBATTLELEVELS (DATADIR "DARKWAR.RTC")
-#define  SUPERROTTBATTLELEVELS (DATADIR "ROTTCD.RTC")
-#define  SITELICENSEBATTLELEVELS (DATADIR "ROTTSITE.RTC")
+#define  STANDARDGAMELEVELS   CreateDataDirPath("DARKWAR.RTL", 0)
+#define  STANDARDBATTLELEVELS CreateDataDirPath("DARKWAR.RTC", 0)
+#define  SUPERROTTBATTLELEVELS CreateDataDirPath("ROTTCD.RTC", 0)
+#define  SITELICENSEBATTLELEVELS CreateDataDirPath("ROTTSITE.RTC", 0)
 #else
-#define  STANDARDGAMELEVELS   (DATADIR "HUNTBGIN.RTL")
-#define  STANDARDBATTLELEVELS (DATADIR "HUNTBGIN.RTC")
+#define  STANDARDGAMELEVELS   CreateDataDirPath("HUNTBGIN.RTL")
+#define  STANDARDBATTLELEVELS CreateDataDirPath("HUNTBGIN.RTC")
 #endif
 
 enum
@@ -161,5 +161,9 @@ extern boolean TILESTATS;
 extern boolean HUD;
 
 extern char CWD[40];
+
+extern char *GetDataDirPath();
+
+extern char *CreateDataDirPath(char *append, boolean malloc);
 
 #endif

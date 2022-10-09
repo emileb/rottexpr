@@ -103,7 +103,7 @@ char LevelName[80];
 static cachetype * cachelist;
 static word cacheindex;
 static boolean CachingStarted=false;
-static char * ROTTMAPS = STANDARDGAMELEVELS;
+#define ROTTMAPS  STANDARDGAMELEVELS
 char * BATTMAPS;
 
 static char NormalWeaponTiles[ 10 ] =

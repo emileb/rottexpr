@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <fcntl.h>
 #include <string.h>
 #include <signal.h>
+#include <stdio.h>
 
 #if USE_SDL
 /* Need to redefine main to SDL_main on some platforms... */
@@ -151,6 +152,9 @@ extern void RecordDemoQuery ( void );
 
 extern int CountDigits(const int number);
 
+
+static char dataDir[MAX_PATH];
+
 #ifdef __ANDROID__
 int main_mobile (int argc, char *argv[])
 #else
@@ -181,6 +185,19 @@ int main (int argc, char *argv[])
         free(path);
     }
 #endif
+
+    int arg = CheckParm ("datadir");
+    if (arg!=0)
+    {
+        if (_argv[arg + 1] != 0)
+        {
+            snprintf(dataDir, MAX_PATH, "%s", _argv[arg + 1]);
+        }
+    }
+    else
+    {
+        snprintf(dataDir, MAX_PATH, "%s", "./darkwar/");
+    }
 
     signal (11, crash_print);
 
@@ -921,9 +938,9 @@ NoRTC:
     // Normal ROTT wads
 
 #if (SHAREWARE)
-    newargs [argnum++] = DATADIR "HUNTBGIN.WAD";
+    newargs [argnum++] = CreateDataDirPath("HUNTBGIN.WAD", true);
 #else
-    newargs [argnum++] = DATADIR "DARKWAR.WAD";
+    newargs [argnum++] = CreateDataDirPath("DARKWAR.WAD", true);
 #endif
 
 //   newargs [argnum++] = "credits.wad";
@@ -944,7 +961,7 @@ NoRTC:
     }
     else
     {
-        newargs [argnum++] = DATADIR "REMOTE1.RTS";
+        newargs [argnum++] = CreateDataDirPath("REMOTE1.RTS", true);
     }
 
     if (tempstr)
@@ -2960,4 +2977,24 @@ void PlayCinematic (void)
         break;
 #endif
     }
+}
+
+char *GetDataDirPath()
+{
+    return dataDir;
+}
+
+char *CreateDataDirPath(char *append, boolean doMalloc)
+{
+    static char staticPath[MAX_PATH];
+
+    char *path;
+
+    if(doMalloc)
+        path = malloc(MAX_PATH);
+    else
+        path = staticPath;
+
+    snprintf (path, MAX_PATH, "%s/%s", dataDir, append);
+    return path;
 }
