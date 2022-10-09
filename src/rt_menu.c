@@ -1962,7 +1962,13 @@ menuitems CP_MainMenu
             break;
 
         case -1:
-            CP_Quit( 0 );
+            if(ingame)
+            {
+                StartGame = true;
+                DisableScreenStretch();//bna++ shut off streech mode
+            }
+            else
+                CP_Quit( 0 );
             break;
 
         default:
