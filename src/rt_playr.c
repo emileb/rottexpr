@@ -2487,8 +2487,8 @@ void PollMove (void)
 
 	    ax = (ax>>10) + (ax >> 11);
 
-	    controlbuf[0] = -(FixedMul (ax, costable[angle]));
-	    controlbuf[1] = FixedMul (ax, sintable[angle]);
+	    controlbuf[0] += -(FixedMul (ax, costable[angle]));
+	    controlbuf[1] += FixedMul (ax, sintable[angle]);
 	}
 	else if (ax > 0)
 	{
@@ -2496,8 +2496,8 @@ void PollMove (void)
 
 	    ax = (ax>>10) + (ax >> 11);
 
-	    controlbuf[0] = FixedMul (ax, costable[angle]);
-	    controlbuf[1] = -(FixedMul (ax, sintable[angle]));
+	    controlbuf[0] += FixedMul (ax, costable[angle]);
+	    controlbuf[1] += -(FixedMul (ax, sintable[angle]));
 	}
 
 	// Forward / backwards

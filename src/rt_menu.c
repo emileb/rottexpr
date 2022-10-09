@@ -94,6 +94,9 @@ boolean inmenu    = false;
 boolean pickquick = false;
 boolean NewGame   = false;
 
+#ifdef __ANDROID__
+boolean inyesno = false;
+#endif
 //
 // Global window coords
 //
@@ -2858,6 +2861,9 @@ boolean CP_DisplayMsg
 )
 
 {
+#ifdef __ANDROID__
+    inyesno = true;
+#endif
 #define Q_W    184
 #define Q_H    72
 #define Q_X    ((320-Q_W)/2)-18
@@ -3108,6 +3114,10 @@ boolean CP_DisplayMsg
         LastScan = 0;
     }
     IN_ClearKeysDown();
+
+#ifdef __ANDROID__
+    inyesno = false;
+#endif
     return( retval );
 }
 

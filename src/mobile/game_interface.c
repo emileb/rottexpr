@@ -4,6 +4,8 @@
 #include <stdbool.h>
 
 #include "game_interface.h"
+#include "../rt_def.h"
+#include "../../../../Clibs_OpenTouch/game_interface.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -134,17 +136,17 @@ void PortableAction(int state, int action)
 			    PortableKeyEvent(state,SDL_SCANCODE_MINUS,0);
 			    break;
 			case PORT_ACT_NEXT_WEP:
-			    //key = e_bi_next_weapon;
+			    key = bt_swapweapon;
 			    break;
 			case PORT_ACT_PREV_WEP:
-			    //key = e_bi_prev_weapon;
+				key = bt_swapweapon;
 			    break;
 
 			case PORT_ACT_QUICKSAVE:
-			    //key = e_bi_quick_save;
+                PortableKeyEvent( state, SDL_SCANCODE_F6, 0);
 			    break;
 			case PORT_ACT_QUICKLOAD:
-			    //key = e_bi_quick_load;
+				PortableKeyEvent( state, SDL_SCANCODE_F9, 0);
 			    break;
 
 			case PORT_ACT_WEAP1:
@@ -258,10 +260,13 @@ void PortableInit(int argc,const char ** argv)
 extern bool ingame;
 extern bool inmenu;
 extern bool pickquick;
+extern bool inyesno;
 
 touchscreemode_t PortableGetScreenMode()
 {
-	if(ingame && !inmenu)
+    if(inyesno)
+        return TS_Y_N;
+	else if(ingame && !inmenu)
 		return TS_GAME;
 	else
 		return TS_MENU;
@@ -284,7 +289,7 @@ void PortableAutomapControl(float zoom, float x, float y)
 
 void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 {
-	*side += sidemove       * -600000;
+	*side += sidemove * -0x160000;
 	*forward += -forwardmove   * 2000;
 
     // Mouse movement
