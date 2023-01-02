@@ -671,17 +671,22 @@ int SD_SoundActive ( int handle )
 // SD_WaitSound - wait until a sound has finished
 //
 //***************************************************************************
+#ifdef __ANDROID__
+extern int g_menuButtonPressed;
+#endif
 void SD_WaitSound ( int handle )
 {
     int time;
 
     IN_ClearKeysDown();
 
+    g_menuButtonPressed = 0;
+
     while (FX_SoundActive(handle)!=0)
     {
         time=GetTicCount()+1;
         while (time>GetTicCount()) {}
-        if ((LastScan) || IN_GetMouseButtons())
+        if ((LastScan) || IN_GetMouseButtons() || g_menuButtonPressed)
             break;
     }
 }

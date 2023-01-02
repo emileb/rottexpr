@@ -55,6 +55,9 @@ static bool checkAck = false;
 static boolean android_buttonpoll[NUMBUTTONS] = {0};
 extern boolean buttonpoll[NUMBUTTONS];
 
+
+int g_menuButtonPressed = false; // Just used to quite game properly
+
 void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d   %d",state,action);
@@ -63,6 +66,8 @@ void PortableAction(int state, int action)
 	    (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_Y_N )))
 	{
 	    SDL_Scancode scanCode = SDL_SCANCODE_UNKNOWN;
+
+        g_menuButtonPressed = 1;
 
 	    switch (action)
 		{
@@ -118,14 +123,12 @@ void PortableAction(int state, int action)
 			case PORT_ACT_MOVE_RIGHT:
 			    key = di_west;
 			    break;
-
 			case PORT_ACT_USE:
 			    key = bt_use;
 			    break;
 			case PORT_ACT_ATTACK:
 			    key = bt_attack;
 			    break;
-
 			case PORT_ACT_MAP:
 			    key = bt_map;
 			    break;
@@ -141,14 +144,12 @@ void PortableAction(int state, int action)
 			case PORT_ACT_PREV_WEP:
 				key = bt_swapweapon;
 			    break;
-
 			case PORT_ACT_QUICKSAVE:
                 PortableKeyEvent( state, SDL_SCANCODE_F6, 0);
 			    break;
 			case PORT_ACT_QUICKLOAD:
 				PortableKeyEvent( state, SDL_SCANCODE_F9, 0);
 			    break;
-
 			case PORT_ACT_WEAP1:
 			    key = bt_pistol;
 			    break;
@@ -161,6 +162,12 @@ void PortableAction(int state, int action)
 			case PORT_ACT_WEAP4:
 			    key = bt_missileweapon;
 			    break;
+			case PORT_ACT_FLY_UP:
+				key = bt_lookup;
+				break;
+			case PORT_ACT_FLY_DOWN:
+				key = bt_lookdown;
+				break;
 		}
 
 		if(key != bt_nobutton)
@@ -293,7 +300,7 @@ void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 	*forward += -forwardmove   * 2000;
 
     // Mouse movement
-	*yaw += look_yaw_mouse * 150000000;
+	*yaw += look_yaw_mouse * 200000000;
 	*pitch += look_pitch_mouse * -600;
 
     // Joystick movement
