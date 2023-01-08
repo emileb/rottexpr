@@ -168,7 +168,10 @@ int   DSL_BeginBufferedPlayback( char *BufferStart,
 	if (MixMode & SIXTEEN_BIT) chunksize *= 2;
 	if (MixMode & STEREO) chunksize *= 2;
 */
-	
+#ifdef __ANDROID__
+	Mix_SetSoundFonts("fluidsynth.sf2");
+#endif
+
 	if (Mix_OpenAudio(SampleRate, format, channels, chunksize) < 0) {
 		DSL_SetErrorCode(DSL_MixerInitFailure);
 		
