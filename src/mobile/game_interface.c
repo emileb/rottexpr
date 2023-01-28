@@ -36,6 +36,7 @@ int printf (__const char * format, ...)
 }
 
 extern int SDL_SendKeyboardKey(Uint8 state, SDL_Scancode scancode);
+extern void androidWaitFrames(int frames);
 
 int PortableKeyEvent(int state, int code, int unicode){
 	LOGI("PortableKeyEvent %d %d %d",state,code,unicode);
@@ -46,7 +47,6 @@ int PortableKeyEvent(int state, int code, int unicode){
 		SDL_SendKeyboardKey(SDL_RELEASED, (SDL_Scancode) code);
 
 	return 0;
-
 }
 
 
@@ -130,7 +130,8 @@ void PortableAction(int state, int action)
 			    key = bt_attack;
 			    break;
 			case PORT_ACT_MAP:
-			    key = bt_map;
+			    //key = bt_map;
+				PortableKeyEvent(state,SDL_SCANCODE_TAB,0);
 			    break;
 			case PORT_ACT_MAP_ZOOM_IN:
 			    PortableKeyEvent(state,SDL_SCANCODE_EQUALS,0);
@@ -284,7 +285,8 @@ void PortableBackButton()
     PortableKeyEvent(1, SDL_SCANCODE_ESCAPE,0 );
     // Horrible and risky, wait for 200ms, in this time the game must have run a frame or 2 to pickup the key press
     //int usleep(int);
-    usleep( 1000 * 200 );
+    //usleep( 1000 * 200 );
+    androidWaitFrames(1);
     PortableKeyEvent(0, SDL_SCANCODE_ESCAPE, 0);
 }
 
@@ -310,7 +312,12 @@ void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch)
 	look_yaw_mouse = 0;
 	look_pitch_mouse = 0;
 
-	memcpy( buttonpoll, android_buttonpoll, sizeof(android_buttonpoll));
+	for(int n = 0; n <  sizeof(android_buttonpoll); n++)
+	{
+		if(android_buttonpoll[n])
+			buttonpoll[n] = true;
+	}
+	//memcpy( buttonpoll, android_buttonpoll, sizeof(android_buttonpoll));
 }
 
 
