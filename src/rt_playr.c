@@ -2386,6 +2386,18 @@ void PollMove (void)
     if (player->flags & FL_FLEET)
         y += y>>1;
 
+#ifdef __ANDROID__ // Moved up here so x can be updated to can escape the net
+    int ax = 0;
+	int ay = 0;
+    int az = 0;
+    int pitch = 0;
+
+    void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch);
+    INL_ANDROID_GetMovement(&ax, &ay, &az, &pitch);
+
+    x += az;
+#endif
+
     if ((locplayerstate->NETCAPTURED == 1) && (!locplayerstate->HASKNIFE))
     {
         if (first)
@@ -2469,55 +2481,50 @@ void PollMove (void)
 
         if (x != 0)
             controlbuf[2] = x;
-    }
 
 #ifdef __ANDROID__
-	int ax = 0;
-	int ay = 0;
-    int az = 0;
-    int pitch = 0;
+        // Strafing
+        if (ax < 0)
+        {
+            angle = (player->angle - FINEANGLES/4)&(FINEANGLES-1);
 
-    void INL_ANDROID_GetMovement(int *side, int *forward, int *yaw, int *pitch);
-    INL_ANDROID_GetMovement(&ax, &ay, &az, &pitch);
+            ax = (ax>>10) + (ax >> 11);
 
-	// Strafing
-	if (ax < 0)
-	{
-	    angle = (player->angle - FINEANGLES/4)&(FINEANGLES-1);
+            controlbuf[0] += -(FixedMul (ax, costable[angle]));
+            controlbuf[1] += FixedMul (ax, sintable[angle]);
+        }
+        else if (ax > 0)
+        {
+            angle = (player->angle + FINEANGLES/4)&(FINEANGLES-1);
 
-	    ax = (ax>>10) + (ax >> 11);
+            ax = (ax>>10) + (ax >> 11);
 
-	    controlbuf[0] += -(FixedMul (ax, costable[angle]));
-	    controlbuf[1] += FixedMul (ax, sintable[angle]);
-	}
-	else if (ax > 0)
-	{
-	    angle = (player->angle + FINEANGLES/4)&(FINEANGLES-1);
+            controlbuf[0] += FixedMul (ax, costable[angle]);
+            controlbuf[1] += -(FixedMul (ax, sintable[angle]));
+        }
 
-	    ax = (ax>>10) + (ax >> 11);
+        // Forward / backwards
+        if (ay != 0)
+        {
+            controlbuf[0] += -(FixedMul (ay, viewcos));
+            controlbuf[1] += (FixedMul (ay, viewsin));
+        }
 
-	    controlbuf[0] += FixedMul (ax, costable[angle]);
-	    controlbuf[1] += -(FixedMul (ax, sintable[angle]));
-	}
+        // Turning
+        //controlbuf[2] += az;
 
-	// Forward / backwards
-	if (ay != 0)
-	{
-	    controlbuf[0] += -(FixedMul (ay, viewcos));
-	    controlbuf[1] += (FixedMul (ay, viewsin));
-	}
-
-	// Turning
-    controlbuf[2] += az;
-
-    // Pitch
-    if (usemouselook == true)
-    {
-		playertype * pstate;
-		pstate=&PLAYERSTATE[consoleplayer];
-		pstate->horizon -= pitch * inverse_mouse;
-	}
+        // Pitch
+        if (usemouselook == true)
+        {
+            playertype * pstate;
+            pstate=&PLAYERSTATE[consoleplayer];
+            pstate->horizon -= pitch * inverse_mouse;
+        }
 #endif
+    }
+
+
+
 
     if (buttonpoll[bt_strafeleft])
     {

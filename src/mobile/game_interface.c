@@ -39,7 +39,7 @@ extern int SDL_SendKeyboardKey(Uint8 state, SDL_Scancode scancode);
 extern void androidWaitFrames(int frames);
 
 int PortableKeyEvent(int state, int code, int unicode){
-	LOGI("PortableKeyEvent %d %d %d",state,code,unicode);
+	//LOGI("PortableKeyEvent %d %d %d",state,code,unicode);
 
 	if (state)
 		SDL_SendKeyboardKey(SDL_PRESSED, (SDL_Scancode)code);
