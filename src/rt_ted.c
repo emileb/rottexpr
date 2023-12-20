@@ -1623,7 +1623,7 @@ word GetMapCRC
 
 {
     int  filehandle;
-    char filename[ 80 ];
+    char filename[ 255 ];
     RTLMAP RTLMap;
 
     GetMapFileName( &filename[ 0 ] );
