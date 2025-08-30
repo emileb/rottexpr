@@ -188,6 +188,11 @@ void PortableCommand(const char * cmd)
 
 }
 
+bool PortableSetAlwaysRun(bool run)
+{
+    return false;
+}
+
 // =================== FORWARD and SIDE MOVMENT ==============
 
 static float forwardmove, sidemove; //Joystick mode
