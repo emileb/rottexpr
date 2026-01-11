@@ -89,7 +89,7 @@ LOCAL_SRC_FILES += audiolib/usrhooks.c
 
 LOCAL_LDLIBS := -lEGL -ldl -llog -lz -lm -lc -lGLESv1_CM
 LOCAL_STATIC_LIBRARIES := logwritter
-LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer core_shared saffal
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer saffal
 
 LOCAL_STATIC_LIBRARIES +=
 
